@@ -1,0 +1,1 @@
+cmd_/home/mab/ssci/code/prototype/guest/orchestrator/gwd.ko := ld -r -m elf_x86_64 -T /usr/src/vanilla-3.11/scripts/module-common.lds --build-id  -o /home/mab/ssci/code/prototype/guest/orchestrator/gwd.ko /home/mab/ssci/code/prototype/guest/orchestrator/gwd.o /home/mab/ssci/code/prototype/guest/orchestrator/gwd.mod.o

@@ -1,0 +1,17 @@
+CC := gcc
+MODULE_NAME := ivmagent
+KDIR  := /lib/modules/$(shell uname -r)/build
+PWD   := $(shell pwd)
+CFILES := intra-vm-agent.c
+OBJS := $(CFILES:%.c=%.o)
+
+obj-m := $(MODULE_NAME).o
+$(MODULE_NAME)-objs := $(OBJS)
+ccflags-y := -g
+ccflags-y += -Wall
+
+default:
+	$(MAKE) -C $(KDIR) M=$(PWD) modules
+
+clean:
+	rm -rf *.o *.ko *.cmd *.c~ *.mod.c Module.symvers modules.order

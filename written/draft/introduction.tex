@@ -1,0 +1,91 @@
+
+\section{Introduction}
+
+Thc core entity used for facilitating virtualization in cloud computing
+infrastructures is the \textit{hypervisor} (also referred to as the
+\textit{VMM} - Virtual Machine Monitor) , as in \cite{Azab:2010:HES:1866307.1866313,Ben-Yehuda:nested-HV:2010,coker-sandboxing,Colp:HV-modularization:2011,DBLP:conf:raid:Stewin13,ddos-cpuid,defense-rootkit-attacks,GMU-CS-TR-Evasion-2011-8,hypervisor-security-future,liu-mao:distributed-HV:2013,McCune:2008:FEI:1357010.1352625,Pearce:2013:VIS:2431211.2431216}.
+Being a basic part in the virtualization infrastructure the hypervisor
+is the most attractive target for attackers. The (steadily rising)
+complexity of hypervisors (\cite{Colp:HV-modularization:2011}) and
+unlimited privileges of hypervisors over virtual machines%
+\footnote{Abbreviated as \textit{VM}s in the article%
+} (\cite{pfoh-vmmonitor-2013,Wailly:2012:VMS:2371536.2371564}) aggravate
+the situation because a successful attack against the hypervisor almost
+certainly brings the whole system down. In the meantime threats evolve
+faster than hypervisor defense mechanisms; thus a significant part
+of the attacks against the hypervisor succeed. This happens because
+pro-active detection of malicious activities often requires the logic
+of security modules to be guided by threat-specific behavioral patterns.
+Detecting threats following the symptoms of (already compromised and
+malfunctioning) system is a more generic task as in \cite{Wang:rootkits:2009}.
+
+Trying to keep the situation under control, designers augment hypervisors
+with additional security functions that are intended to fight new
+threats. This functionality can set an additional security layer threats
+attempt to compromise (for example, sandboxing of individual drivers
+\cite{coker-sandboxing} or even running the whole hypervisor in an
+additional VM , as in \cite{Ben-Yehuda:nested-HV:2010}). Another
+way to fight malicious activities is sanitizing the internal structures
+of (possibly already compromised) hypervisor, as in \cite{Wailly:2012:VMS:2371536.2371564}
+thus mitigating the malicious actions. In any case, once a threat
+captures the system, the latter faces severe danger, possibly crashing.
+
+Here comes our novelty. Admitting that threats evolve faster than
+the corresponding defense mechanisms, we shift the focus from preventing/mitigating
+of malicious activities to building a system that is capable of recovering
+gracefully after threat attacks and regaining stable behavior. We
+refer to recovery as the existence of (at least) the possibility for
+restarting from an initial (stable) state. Graceful recovery is a
+recovery that tries to keep the system requirements during convergence
+and converge fast to a stable state, possibly by rolling back (or
+forward) restarting the system from the stable state that is nearest
+in the execution history (which can be built by snapshotting and consistency
+checks prior to reloading). In contrast to proactive defense, this
+approach does not require the security logic to be guided by threat-specific
+behavior and thus can be easily adapted to new threats.
+
+We also leverage on the solid background in the area of self-stabilizing
+systems. Following \cite{bib297:Dolev:selfstab,4553720,bib459:SS2004,Dolev:2009:SPC:1552309.1552312}
+a system is self-stabilizing if every its execution always ends up
+in a stable state after a finite number of steps no matter what state
+it is initialized in. Stable (also called safe) states are distinguished
+from unstable ones solely through the concrete application logic,
+namely, any system execution that starts in a stable state exhibits
+the desired application (also called task) behavior. 
+
+
+\paragraph{Main Idea}
+
+Materializing the above idea, we suggest a novel self-stabilizing
+hypervisor architecture. Once in a time period, a special routine,
+the \textit{stabilization manager} (SM) examines the hypervisor, checking
+whether the latter is in a stable state. If needed, the system is
+set into a safe (stable) state. The corresponding enforcement actions
+range from simple, coarse-grained ones (like restarting suspicious
+VMs or even the entire hypervisor) to fine-grained ones; for example,
+stopping individual guest applications with suspicious behavior).
+Upon success, the SM notifies the \textit{system watchdog} (explained
+next) by sending the \textit{I\_Am\_Alive} message. Even if the SM
+itself is corrupted (e.g., due to a successful attack) and thus does
+not fulfill its duties, the watchdog ultimately reveals this (either
+by the absence of \textit{I\_Am\_Alive} messages or following a system
+integrity check) and restarts the system. The watchdog module is tamper-resilient
+because it is write-protected (by virtue of residing in the hardware-protected
+memory) and is triggered by hardware timer. The watchdog thus forms
+the trusted computing base of our system. We provide a conceptual
+description of the architecture and argue that it is self-stabilizing.
+
+As a proof of concept we implement the SM as a separate Linux kernel
+module collaborating with the KVM infrastructure \cite{kvm-site}.
+We use KVM as a minimalistic hypervisor to illustrate the application
+of our concept. We chose KVM because it is widely used, compact, simple
+and open-sourced (being a part of the constantly maintained Linux
+kernel). The last feature allows augmenting KVM with robustness functionality
+in the coming stages.
+
+Section \ref{sec:The-architecture} outlines the architecture of the
+self-stabilizing hypervisor, arguing that our system is self-stabilizing.
+Section \ref{sec:The-prototype} describes the prototype we are developing
+as the proof of concept. Related work is sketched in Section \ref{sec:Related-Work}.
+Finally, Section \ref{sec:Conclusions-and-Future-Work} presents the
+conclusions of our work and outlines some future research directions. 

@@ -1,0 +1,188 @@
+%% LyX 2.0.7 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+%\usepackage{color}
+%\usepackage{url}
+%\usepackage{amsthm}
+%\usepackage{amsmath}
+%\usepackage{graphicx}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{babel}
+\usepackage{url}
+\usepackage{authblk}
+\usepackage{graphicx}
+\usepackage[centertags]{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{newlfont}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{epsfig,epstopdf}
+\usepackage{amscd,amsmath,verbatim}
+\usepackage{fullpage}
+\usepackage{textcomp}
+\usepackage[OT1,T1]{fontenc}
+\usepackage{subfigure}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage[section]{placeins}
+
+% THEOREM Environments ---------------------------------------------------
+ \newtheorem{thm}{Theorem}[subsection]
+\renewcommand{\thethm}{\arabic{section}.\arabic{thm}}
+ \newtheorem{cor}[thm]{Corollary}
+ \newtheorem{lem}[thm]{Lemma}
+ \newtheorem{prop}[thm]{Proposition}
+ \theoremstyle{definition}
+ \newtheorem{defn}[thm]{Definition}
+ \theoremstyle{remark}
+ \newtheorem{rem}[thm]{Remark}
+ \numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
+%\renewcommand{\baselinestretch}{2.0}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\figurespacing}{\vspace{-0.3cm}}			% set spacing in figure caption
+\newcommand{\captionsize}{\footnotesize}% put some size command (e.g., \footnotesize) to affect captions size in all
+\newcommand{\Section}[1]{\section{#1}}
+\newcommand{\Subsection}[1]{\subsection{#1}}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+%\newenvironment{proof}[1][Proof]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%\newenvironment{definition}[1][Definition]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+% MATH -------------------------------------------------------------------
+ \DeclareMathOperator{\RE}{Re}
+ \DeclareMathOperator{\IM}{Im}
+ \DeclareMathOperator{\ess}{ess}
+ \newcommand{\eps}{\varepsilon}
+ \newcommand{\To}{\longrightarrow}
+ \newcommand{\h}{\mathcal{H}}
+ \newcommand{\s}{\mathcal{S}}
+ \newcommand{\A}{\mathcal{A}}
+ \newcommand{\J}{\mathcal{J}}
+ \newcommand{\M}{\mathcal{M}}
+ \newcommand{\W}{\mathcal{W}}
+ \newcommand{\X}{\mathcal{X}}
+ \newcommand{\BOP}{\mathbf{B}}
+ \newcommand{\BH}{\mathbf{B}(\mathcal{H})}
+ \newcommand{\KH}{\mathcal{K}(\mathcal{H})}
+ \newcommand{\Real}{\mathbb{R}}
+ \newcommand{\Complex}{\mathbb{C}}
+ \newcommand{\Field}{\mathbb{F}}
+ \newcommand{\RPlus}{\Real^{+}}
+ \newcommand{\Polar}{\mathcal{P}_{\s}}
+ \newcommand{\Poly}{\mathcal{P}(E)}
+ \newcommand{\EssD}{\mathcal{D}}
+ \newcommand{\Lom}{\mathcal{L}}
+ \newcommand{\States}{\mathcal{T}}
+ \newcommand{\abs}[1]{\left\vert#1\right\vert}
+ \newcommand{\set}[1]{\left\{#1\right\}}
+ \newcommand{\seq}[1]{\left<#1\right>}
+ \newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+ \newcommand{\essnorm}[1]{\norm{#1}_{\ess}}
+ 
+
+% programs
+\newcommand{\Do}{{\small\bf do}\ }
+\newcommand{\Return}{{\small\bf return\ }}
+\newcommand{\Decide}{{\small\bf decide\ }}
+\newcommand{\Proc}[1]{{\it #1\+}}
+\newcommand{\Returns}{{\small\bf returns}}
+\newcommand{\If}{{\small\bf if}\ \=\+}
+\newcommand{\Then}{{\small\bf then}\ \=\+}
+\newcommand{\Else}{\<{\small\bf else}\ \>}
+\newcommand{\Elseif}{\<{\small\bf elseif}\ }
+\newcommand{\Endif}{\<{\small\bf end\ if\ }\-\-}
+\newcommand{\Endproc}[1]{{\small\bf end} {\it #1\-}}
+\newcommand{\For}{{\small\bf for}\ \=\+}
+\newcommand{\Endfor}{{\small\bf end\ for}\ \-}
+\newcommand{\While}{{\small\bf while}\ \=\+}
+\newcommand{\Endwhile}{{\small\bf end\ while}\ \-}
+\newcommand{\Loop}{{\bf loop}\ \= \+}
+\newcommand{\Endloop}{{\bf end\ loop}\ \-}
+\newcommand{\Rcomment}[1]{\>{\tt// #1}}
+\newcommand{\Comment}[1]{{\tt// #1}}
+\newenvironment{program}{
+  \begin{minipage}{\textwidth}
+  \begin{tabbing}
+  \ \ \ \ \=\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \
+\ \ \ \ \ \ \ \ \ \=\kill }{
+  \end{tabbing}
+  \end{minipage}
+}
+
+\newcommand{\remove}[1]{}
+\newcommand{\thesisTitle}{Title...}
+\addtolength{\textheight}{0.35cm}
+
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+\bibliographystyle{abbrv}
+\title{Self-Stabilizing Hypervisor Architecture} 
+\date{} 
+\author[1]{Alexander Binun\thanks{binun@cs.bgu.ac.il}}    
+\author[2]{Thierry Coupaye\thanks{thierry.coupaye@orange.com}}    
+\author[1]{Shlomi Dolev\thanks{dolev@cs.bgu.ac.il}} 
+\author[1]{Ramzi Martin Kahil\thanks{kahilm@post.bgu.ac.il}}
+\author[2]{Marc Lacoste\thanks{marc.lacoste@orange.com}}
+\author[2]{Aur\^elien Wailly\thanks{aurelien.wailly@orange.com}}
+\author[3]{Reuven Yagel\thanks{yagel@cs.bgu.ac.il}}
+\affil[1]{Department of Computer Science, Ben-Gurion University of the Negev, Israel}
+\affil[2]{Orange Labs, France}
+\affil[3]{Azrieli, Jerusalem College of Engineering, Israel}
+\maketitle 
+\thispagestyle{empty} 
+\begin{abstract}
+This paper presents the architecture for a self-stabilizing hypervisor
+able to recover itself in the presence of Byzantine faults regardless
+of the state it is currently in. Our architecture is applicable to
+wide variety of underlying hardware and software and does not require
+augmenting computers with special hardware. The actions representing
+defense and recovery strategies can be specified by a user. We describe
+our architecture in OS-independent terms, thus making it applicable
+to various virtualization infrastructures. We also provide a prototype
+extending the Linux-based hypervisor KVM with the self-stabilizing
+functionality. These features allow augmenting KVM with robustness
+functionality in the coming stages and moving to cloud management
+system architectures such as OpenStack to support more industrial
+scenarios.
+
+\input{introduction.tex}
+
+\input{architecture.tex}
+
+\input{prototype.tex}
+
+\input{related-work.tex}
+
+\input{future-work.tex}
+
+\bibliographystyle{abbrv}
+\bibliography{sample}
+\end{abstract}
+
+\end{document}

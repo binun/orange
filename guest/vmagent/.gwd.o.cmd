@@ -1,0 +1,1 @@
+cmd_/home/mab/ssci/code/prototype/guest/orchestrator/gwd.o := ld -m elf_x86_64   -r -o /home/mab/ssci/code/prototype/guest/orchestrator/gwd.o /home/mab/ssci/code/prototype/guest/orchestrator/orchestrator.o 

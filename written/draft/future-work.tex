@@ -1,0 +1,53 @@
+
+\section{\label{sec:Conclusions-and-Future-Work}Conclusions and Future Work}
+
+In this work we have suggested a novel self-stabilizing hypervisor
+architecture which is capable of performing a wide range of stabilizing
+actions starting from coarse-grained ones (like killing suspicious
+VMs) to fine-grained ones (e.g., stopping guest applications whose
+behavior seems to be suspicious). We have provided the conceptual
+description of the architecture as well as the formal proof of its
+self-stabilization. As a proof of concept we implement the self-stabilization
+functionality in the KVM hypervisor \cite{kvm-site}. The design proposed
+in this report adds the self-stabilization feature to the common hypervisor
+architecture. We have also reviewed existing industrial products related
+to the hypervisor level as a first step towards extending the current
+work from a local node to a full distributed cloud setting. Finally,
+we note that our implementation was tested with several initial denial
+of service and rootkits attacks and exhibit low overhead in consistency
+monitoring and guarded commands execution for recovering the system
+to regain consistency. We plan to carry out more extensive experiments
+using known test workloads like the rootkit repositories mentioned
+in \cite{Wang:rootkits:2009} and to collect results.
+
+Several future research directions we propose are provided below: 
+\begin{itemize}
+\item Executing guarded commands in a stabilization-preserving way. So far
+our prototype has several defense policies (Denial of Service (DOS)
+and rootkit defenses) hardcoded. We intend to support user-defined
+specifications of defense policies. We intend also to build a compiler
+that will transform our specifications into the behaviorally equivalent
+set of actions while preserving stabilization.
+\item Specifying device drivers formally. Our architecture is a part of
+the Linux system and thus is not object-oriented. To bridge the gap
+between the conceptions of our architecture (which is not object-oriented)
+and UML (which describes object-oriented conceptions) we used stereotyping,
+making specifications more informal. We intend to learn how to map
+OS-related concepts into the OO domain following the literature (like
+\cite{sertic-rus-rac:uml-realtime:2003}) and apply the approaches
+to our specification thus making the latter more rigorous. 
+\item Guests issuing DOS attacks. One of main challenges posed when detecting
+DOS attacks is 'moving attackers', i.e. the party issuing DOS packets
+(attacker) frequently changes the source IP. Source-based attacker
+spotting is therefore complicated. Moving attacks in cloud infrastructures
+can be easily mounted by placing attackers on migrating VMs (see \cite{key:article}
+for further details on VM migration techniques). Making the Traffic
+Monitor capable of recognizing various patterns (e.g., periodic bursts)
+could improve the precision of DOS recognition. 
+\item Comprehensive Security Model. The security model supported in our
+architecture covers several common threats/failures plaguing cloud
+infrastructures: VM state corruption, malicious inter-VM communication
+and greedy resource allocation. We intend to study various security
+models used in cloud infrastructures, create a comprehensive taxonomy
+of VM threats and enhance our security model. \end{itemize}
+

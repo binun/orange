@@ -1,0 +1,187 @@
+\begin{thebibliography}{10}
+
+\bibitem{trust-zone}
+ARM.
+\newblock {\em Trust Zone}.
+\newblock Available at
+  \url{http://www.arm.com/products/processors/technologies/trustzone/index.php}.
+
+\bibitem{Azab:2010:HES:1866307.1866313}
+A.~M. Azab, P.~Ning, Z.~Wang, X.~Jiang, X.~Zhang, and N.~C. Skalsky.
+\newblock Hypersentry: Enabling stealthy in-context measurement of hypervisor
+  integrity.
+\newblock In {\em Proceedings of the 17th ACM Conference on Computer and
+  Communications Security}, CCS 10, pages 38--49, New York, NY, USA, 2010. ACM.
+
+\bibitem{defense-rootkit-attacks}
+A.~Baliga and L.~Iftode.
+\newblock {\em Automated Defense from Rootkit Attacks}.
+\newblock Available at \url{www.vmware.com/pdf/cambridge_rootkit.pdf}.
+
+\bibitem{Ben-Yehuda:nested-HV:2010}
+M.~Ben-Yehuda, M.~D. Day, Z.~Dubitzky, M.~Factor, N.~Har'El, A.~Gordon,
+  A.~Liguori, O.~Wasserman, and B.-A. Yassour.
+\newblock The turtles project: Design and implementation of nested
+  virtualization.
+\newblock In {\em Proceedings of the 9th USENIX Conference on Operating Systems
+  Design and Implementation}, OSDI 10, pages 1--6, Berkeley, CA, USA, 2010.
+  USENIX Association.
+
+\bibitem{martin-agile:2003}
+R.~C.Martin.
+\newblock {\em Agile Software Development: Principles, Patterns and Practices}.
+\newblock Prentice Hall, Upper Saddle River, NJ, USA, 2003.
+
+\bibitem{coker-sandboxing}
+G.~Coker.
+\newblock {\em Xen Security Modules}.
+\newblock Available at
+  \url{http://mail.xen.org/files/summit_3/coker-xsm-summit-090706.pdf}.
+
+\bibitem{Colp:HV-modularization:2011}
+P.~Colp, M.~Nanavati, J.~Zhu, W.~Aiello, G.~Coker, T.~Deegan, P.~Loscocco, and
+  A.~Warfield.
+\newblock Breaking up is hard to do: Security and functionality in a commodity
+  hypervisor.
+\newblock In {\em Proceedings of the Twenty-Third ACM Symposium on Operating
+  Systems Principles}, SOSP 11, pages 189--202, New York, NY, USA, 2011. ACM.
+
+\bibitem{Dijkstra:1975:Guarded}
+E.~Dijkstra.
+\newblock Guarded commands, nondeterminacy and formal derivation of programs.
+\newblock {\em Commun. ACM}, 18(8):453--457, Aug. 1975.
+
+\bibitem{bib297:Dolev:selfstab}
+S.~Dolev.
+\newblock {\em Self-Stabilization}.
+\newblock MIT Press, March 2000.
+
+\bibitem{bib459:SS2004}
+S.~Dolev.
+\newblock Self stabilizion.
+\newblock {\em AIAA Journal of Aerospace Computing, Information, and
+  Communication (JACIC)}, 1:253--255, June 2004.
+
+\bibitem{Dolev:2009:SPC:1552309.1552312}
+S.~Dolev, Y.~Haviv, and M.~Sagiv.
+\newblock Self-stabilization preserving compiler.
+\newblock {\em ACM Trans. Program. Lang. Systems}, 31(6):22:1--22:42, Aug.
+  2009.
+
+\bibitem{4553720}
+S.~Dolev and R.~Yagel.
+\newblock Towards self-stabilizing operating systems.
+\newblock {\em IEEE Transactions on Software Engineering}, 34(4):564--576, July
+  2008.
+
+\bibitem{kvm-site}
+T.~K. group.
+\newblock {\em The KVM hypervisor}.
+\newblock Available at \url{http://www.linux-kvm.org}.
+
+\bibitem{uml-spec}
+T.~O. O.~M. Group.
+\newblock {\em The UML specification}.
+\newblock Available at \url{http://www.uml.org/}.
+
+\bibitem{sertic-rus-rac:uml-realtime:2003}
+H.Sertic, H.~Rus, and R.Rac.
+\newblock Uml for real-time device driver development.
+\newblock In {\em ConTEL 2003. Proceedings of the 7th International Conference
+  on Telecommunications}, volume~2, pages 631--636, 2003.
+
+\bibitem{GMU-CS-TR-Evasion-2011-8}
+A.~S. Jiang~Wang, Kun~Sun.
+\newblock An analysis of system management mode (smm)-based integrity checking
+  systems and evasion attacks.
+\newblock Technical Report GMU-CS-TR-2011-8, Department of Computer Science,
+  George Mason University, 4400 University Drive MSN 4A5, Fairfax, VA
+  22030-4444 USA, 2011.
+
+\bibitem{hypervisor-security-future}
+M.~Lacoste.
+\newblock {\em What Does the Future Hold for Hypervisor Security}.
+\newblock Available at
+  \url{http://workshop13.tclouds-project.eu/abstracts/what_does_future.pdf}.
+
+\bibitem{liu-mao:distributed-HV:2013}
+C.~Liu and Y.~Mao.
+\newblock Inception: Towards a nested cloud architecture.
+\newblock In {\em Presented as part of the 5th USENIX Workshop on Hot Topics in
+  Cloud Computing}, Berkeley, CA, 2013. USENIX.
+
+\bibitem{McCune:2008:FEI:1357010.1352625}
+J.~M. McCune, B.~J. Parno, A.~Perrig, M.~K. Reiter, and H.~Isozaki.
+\newblock Flicker: An execution infrastructure for tcb minimization.
+\newblock {\em SIGOPS Oper. Syst. Rev.}, 42(4):315--328, Apr. 2008.
+
+\bibitem{key:article}
+P.~D. Patel, M.~Karamta, M.~D. Bhavsar, and M.~B. Potdar.
+\newblock Article: Live virtual machine migration techniques in cloud
+  computing: A survey.
+\newblock {\em International Journal of Computer Applications}, 86(16):18--21,
+  January 2014.
+\newblock Published by Foundation of Computer Science, New York, USA.
+
+\bibitem{Pearce:2013:VIS:2431211.2431216}
+M.~Pearce, S.~Zeadally, and R.~Hunt.
+\newblock Virtualization: Issues, security threats, and solutions.
+\newblock {\em ACM Comput. Surv.}, 45(2):17:1--17:39, Mar. 2013.
+
+\bibitem{ddos-cpuid}
+D.~Perez-Botero and R.~Lee.
+\newblock {\em Characterizing the VM-Hypervisor Attack Surface}.
+\newblock Available at
+  \url{www.cs.princeton.edu/~diegop/data/580_final_project.pdf}.
+
+\bibitem{pfoh-vmmonitor-2013}
+J.~Pfoh.
+\newblock {\em Leveraging Derivative Virtual Machine Introspection Methods for
+  Security Applications}.
+\newblock Phd thesis, Technische Universit\"{a}t M\"{u}nchen, The Computer
+  Science Department, 2013.
+
+\bibitem{intel-systret}
+T.~X. project community.
+\newblock {\em The Intel SYSRET privilege escalation}.
+\newblock Available at
+  \url{http://blog.xen.org/index.php/2012/06/13/the-intel-sysret-privilege-escalation/}.
+
+\bibitem{VirtIO-Russell}
+R.~Russell.
+\newblock {\em VirtIO:Towards the De-Facto Standard for Virtual I/O devices}.
+\newblock Available at \url{ozlabs.org/~rusty/virtio-spec/virtio-paper.pdf}.
+
+\bibitem{Srivastava:2008:TAB:1433006.1433011}
+A.~Srivastava and J.~Giffin.
+\newblock Tamper-resistant, application-aware blocking of malicious network
+  connections.
+\newblock In {\em Proceedings of the 11th International Symposium on Recent
+  Advances in Intrusion Detection}, RAID 08, pages 39--58, Berlin, Heidelberg,
+  2008. Springer-Verlag.
+
+\bibitem{DBLP:conf:raid:Stewin13}
+P.~Stewin.
+\newblock A primitive for revealing stealthy peripheral-based attacks on the
+  computing platform's main memory.
+\newblock In {\em RAID}, pages 1--20, 2013.
+
+\bibitem{vmware-site}
+VMWare.
+\newblock {\em The VMWare hypervisor}.
+\newblock Available at \url{http://www.vmware.com}.
+
+\bibitem{Wailly:2012:VMS:2371536.2371564}
+A.~Wailly, M.~Lacoste, and H.~Debar.
+\newblock Vespa: Multi-layered self-protection for cloud resources.
+\newblock In {\em Proceedings of the 9th International Conference on Autonomic
+  Computing}, ICAC 12, pages 155--160, New York, NY, USA, 2012. ACM.
+
+\bibitem{Wang:rootkits:2009}
+Z.~Wang, X.~Jiang, W.~Cui, and P.~Ning.
+\newblock Countering kernel rootkits with lightweight hook protection.
+\newblock In {\em Proceedings of the 16th ACM Conference on Computer and
+  Communications Security}, CCS '09, pages 545--554, New York, NY, USA, 2009.
+  ACM.
+
+\end{thebibliography}
