@@ -1,0 +1,58 @@
+(lp0
+(lp1
+S'Alice'
+p2
+aS'01'
+p3
+aS'it is alice '
+p4
+aa(lp5
+S'Love '
+p6
+aS'02'
+p7
+aS'it,is love 1'
+p8
+aa(lp9
+S'Bob  '
+p10
+aS'03'
+p11
+aS'it.is Bob   '
+p12
+aa(lp13
+S'Zhang'
+p14
+aS'04'
+p15
+aS'ISrael      '
+p16
+aa(lp17
+S'Wang '
+p18
+aS'05'
+p19
+aS'United sates'
+p20
+aa(lp21
+S'Zhao '
+p22
+aS'06'
+p23
+aS'Ok come     '
+p24
+aa(lp25
+S'Ming '
+p26
+aS'07'
+p27
+aS'it is Bob   '
+p28
+aa(lp29
+S'Hilel'
+p30
+aS'08'
+p31
+aS'yes,it is Me'
+p32
+aa.

@@ -53,7 +53,7 @@ static void refreshCurrentState(void)
 //Callbacks for watchdog and timer
 static void stabilization_timer_callback( unsigned long data )
 { 	
-	printk("Next SM phase in %d msecs\n", stab_timer_period);
+	//printk("Next SM phase in %d msecs\n", stab_timer_period);
 
 	refreshCurrentState();
 
@@ -101,11 +101,11 @@ static int __init main_init(void)
   debugPrint("INIT - Starting to load main");
 
   ret |= initStabmanDevice();
-  ret |= initWatchdog();
+  //ret |= initWatchdog();
   ret |= initHypervisor();
   ret |= initStabilizationManager();
   //ret |= initTrafficManager();
-  ret |= initScheduler();
+  //ret |= initScheduler();
   
   return ret;
 }

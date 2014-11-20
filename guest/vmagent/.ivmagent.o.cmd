@@ -1,1 +1,1 @@
-cmd_/home/mab/ssci/code/prototype/guest/vmagent/ivmagent.o := ld -m elf_x86_64   -r -o /home/mab/ssci/code/prototype/guest/vmagent/ivmagent.o /home/mab/ssci/code/prototype/guest/vmagent/intra-vm-agent.o 
+cmd_/home/binun/Documents/orange/guest/vmagent/ivmagent.o := ld -m elf_x86_64   -r -o /home/binun/Documents/orange/guest/vmagent/ivmagent.o /home/binun/Documents/orange/guest/vmagent/intra-vm-agent.o 

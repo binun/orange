@@ -2,7 +2,7 @@ CC := gcc
 MODULE_NAME := stabman
 KDIR  := /lib/modules/$(shell uname -r)/build
 PWD   := $(shell pwd)
-CFILES := data.c chardrv/stabdrv.c chardrv/findoffsets.c hypervisor/hypervisor.c hypervisor/cpuid_trace.c trafficman/trafficman.c watchdog/watchdog.c scheduler/sched.c utils/utils.c guarded/guard_commands.c main_stm.c
+CFILES := data.c chardrv/stabdrv.c chardrv/findoffsets.c hypervisor/hypervisor.c hypervisor/cputrace.c trafficman/trafficman.c watchdog/watchdog.c scheduler/sched.c utils/utils.c guarded/guard_commands.c main_stm.c
 OBJS := $(CFILES:%.c=%.o)
 
 obj-m := $(MODULE_NAME).o

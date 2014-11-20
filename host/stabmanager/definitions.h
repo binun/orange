@@ -9,10 +9,15 @@
 #define MAX_VCPUS 10
 #define MAX_CPU_REQUESTS 200
 #define MSGLEN 50
+#define DEVICE_NAME "sm_channel"
+
+#define SIG_VMREBOOT 33
+#define SIG_VMUPDATE 34
+
 #define HC_ALARM 10
 #define HC_ALIVE 11
-#define DEVICE_NAME "sm_channel"
-#define SIG_VM 0x0f
+#define HC_VMUP 12
+#define HC_VMDOWN 13
 
 // Structure definitions
 
@@ -34,6 +39,7 @@ typedef struct tagVCPUState
  bool toReset;
  pid_t pid;
  unsigned long last_rebooted;
+ unsigned short ip[4];
  atomic_t dos_requests; //number of CPUID, RDTSC etc for this VCPU
  
 } VCPUState;
@@ -52,7 +58,7 @@ extern int stab_timer_period;
 extern int watchdog_period;
 extern int num_vcpus;
 
-extern unsigned long recovery_period;
+extern unsigned long silence_period;
 
 extern VCPUState states[MAX_VCPUS];
 

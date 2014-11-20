@@ -12,6 +12,7 @@
  */
 #define _GNU_SOURCE
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/stat.h>
 #include <signal.h>
 #include <sys/stat.h>
@@ -29,7 +30,9 @@
 #include <libxml/tree.h>
 #include <libvmi/libvmi.h>
 
-#define SIG_VM 0x0f //maximal is 32
+#define SIG_VMREBOOT 33
+#define SIG_VMUPDATE 34
+
 #define LINUX_OS "Linux"
 #define CONFFILE "/etc/libvmi.conf"
 #define MAX_DOMAINS 10
@@ -38,6 +41,7 @@ typedef struct tagVMPID
 {
 	int pid;
 	virDomainPtr dom;
+	char ip[20];
 } VMPID;
 
 static virConnectPtr conn = NULL; /* the hypervisor connection */
@@ -46,6 +50,38 @@ static char *guestdir="/var/run/libvirt/qemu";
 static int sm_channel;
 static VMPID vms[MAX_DOMAINS];
 static int pid;
+static int numDomains;
+
+static int runShell(char *cmd, char *result, int limitResult)
+{
+	FILE *fp;
+	int status;
+
+	fp = popen(cmd, "r");
+	if (fp == NULL)
+	{
+		printf("The pipe to %s cannot be opened\n", cmd);
+		return -1;
+	}
+
+	while (fgets(result, limitResult, fp) != NULL)
+	    printf("%s", result);
+
+	status = pclose(fp);
+	if (status == -1)
+	{
+		printf("The pipe to %s cannot be closed\n", cmd);
+	    return -1;
+	}
+	else
+	{
+		printf("%d,%d,%d\n",status, WIFEXITED(status), WEXITSTATUS(status));
+	    /* Use macros described under wait() to inspect `status' in order
+	       to determine success/failure of command executed by popen() */
+
+	}
+	return 0;
+}
 
 static int initVMIFile(int numDomains, char *sysmapName)
 {
@@ -65,16 +101,6 @@ static int initVMIFile(int numDomains, char *sysmapName)
 	   int nb, pid = vmEntry->pid;
 	   char *vmName = virDomainGetName(vmEntry->dom);
        char command[30] = "", vmdata[200] = "";
-	   //vm-name{
-	       //sysmap = "/boot/System.map-3.5.0-24-generic";
-	       //ostype = "Linux";
-	       //linux_name = 0x460;
-	       //linux_tasks = 0x240;
-	       //linux_mm = 0x278;
-	       //linux_pid = 0x2b4;
-	       //linux_pgd = 0x48;
-	       //linux_addr = 0xe8;
-	   //}
 
 	   fprintf(confFile, "%s {\n",vmName);                      //vmname
 	   fprintf(confFile,"    sysmap = \"%s\";\n", sysmapName); //system map file
@@ -170,15 +196,17 @@ static int isActiveDomain(virDomainPtr dom)
     return 0;
 }
 
-static int processDomains(char *sysmap)
+static void refreshDomains(void)
 {
-	int i,numDomains,*activeDomains;
+	int i,*activeDomains;
 	char *domName;
+	char shc[50];
 
 	for (i=0; i<MAX_DOMAINS;i++)
 	{
 		vms[i].dom = NULL;
         vms[i].pid = -1;
+        memset(vms[i].ip,0,20*sizeof(char));
 	}
 
 	numDomains = virConnectNumOfDomains(conn);
@@ -193,17 +221,20 @@ static int processDomains(char *sysmap)
 
 	for (i = 0 ; i < numDomains ; i++)
 	{
+		memset(shc,0,50*sizeof(char));
+
 	    vms[i].dom = virDomainLookupByID(conn, activeDomains[i]);
 	    domName = virDomainGetName(vms[i].dom);
+	    sprintf(shc,"./vm-ip.sh %s", domName);
         pid=0;
 	    examineVM(domName);
         vms[i].pid=pid;
-        printf("Process %d runs the virtual machine %s \n ", vms[i].pid, domName);
+        runShell(shc, vms[i].ip, 20);
+        printf("Process %d runs the virtual machine %s on IP %s\n ", vms[i].pid, domName, vms[i].ip);
 	}
 	printf("\n");
     //initVMIFile(numDomains, sysmap);
 	free(activeDomains);
-	return numDomains;
 }
 
 static void rebootVM(virDomainPtr dom)
@@ -254,11 +285,17 @@ static void receiveData(int signal)
 	}
 }
 
+static void updateVMList(int signal)
+{
+	printf("VM List updated\n");
+	//refreshDomains();
+}
+
 int main(int argc, char **argv)
 {
-  int ret,numDomains;
+  int ret;
   char command[100] = "";
-  struct sigaction sig;
+  struct sigaction sig,sig1;
   vmi_instance_t vmi;
   LIBXML_TEST_VERSION
 
@@ -272,35 +309,36 @@ int main(int argc, char **argv)
     else
     	printf("Successfully connected to the KVM hypervisor\n");
 
-  if (argc<=1 || (argc>=1 && access(argv[1], F_OK)==-1))
-  {
-	  printf("No system map is delivered or the system map does not exist\n");
-	  return 0;
-  }
+  if (argc==1)
+    {
+     printf("Stabilization driver and QEMU runtime directory are not supplied,use defaults %s - %s\n",
+       sm_drv,guestdir);
+
+    }
 
   if (argc==2)
-  {
-	  //printf("Stabilization driver and QEMU runtime directory are not supplied,use defaults %s - %s\n",  sm_drv,guestdir);
-      printf("System map is in %s\n", argv[1]);
-  }
-  if (argc==3)
-  {
-	  //printf("QEMU runtime directory is not still supplied,use default %s\n", guestdir);
-	  sm_drv = argv[2];
-  }
+   {
+	  printf("QEMU runtime directory is not still supplied,use default %s\n", guestdir);
+       sm_drv = argv[1];
+   }
 
-  if (argc==4)
-  {
-  	  //printf("QEMU runtime directory is not still supplied,use default %s\n", guestdir);
-  	  sm_drv = argv[2];
-  	  guestdir = argv[3];
+  if (argc==3)
+   {
+      printf("QEMU runtime directory is not still supplied,use default %s\n",
+        guestdir);
+      sm_drv = argv[1];
+      guestdir = argv[2];
   }
 
   sig.sa_sigaction = receiveData;
   sig.sa_flags = SA_SIGINFO;
-  sigaction(SIG_VM, &sig, NULL);
+  sigaction(SIG_VMREBOOT, &sig, NULL);
 
-  numDomains = processDomains(argv[1]);
+  sig1.sa_sigaction = updateVMList;
+  sig1.sa_flags = SA_SIGINFO;
+  sigaction(SIG_VMUPDATE, &sig1, NULL);
+
+  //refreshDomains();
 
   sm_channel = open(sm_drv,O_RDWR);
   if(sm_channel==-1)
@@ -310,21 +348,20 @@ int main(int argc, char **argv)
        return -1;
     }
 
-  initVMIFile(numDomains, argv[1]);
-
   memset(command, 0, 100);
   sprintf(command, "Usrpid:%d",getpid());
   write(sm_channel, command, strlen(command));
 
-  if (vmi_init(&vmi, VMI_AUTO | VMI_INIT_COMPLETE, "fedora64") == VMI_FAILURE)
-  {
-	  printf("Failed to init LibVMI library.\n");
-	  return -1;
-  }
-  else
-  {
-	  printf("LibVMI is ready to introspect VM %s\n", "fedora64");
-  }
+  //initVMIFile(numDomains, argv[1]);
+  //if (vmi_init(&vmi, VMI_AUTO | VMI_INIT_COMPLETE, "fedora64") == VMI_FAILURE)
+  //{
+	//  printf("Failed to init LibVMI library.\n");
+	 // return -1;
+  //}
+  //else
+  //{
+//	  printf("LibVMI is ready to introspect VM %s\n", "fedora64");
+ // }
 
 
   // -------------------------  Main loop, getting commands from a user
@@ -346,9 +383,9 @@ int main(int argc, char **argv)
     	}
 
     }
-
+    //vmi_destroy(vmi);
     ret = virConnectClose(conn);
     close(sm_channel);
-    vmi_destroy(vmi);
+
     return ret;
 }

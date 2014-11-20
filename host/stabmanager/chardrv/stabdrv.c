@@ -28,27 +28,37 @@ void rebootAll(void)
 	memset(param,0, sizeof(char)*MSGSIZE);
 	sprintf(param, "%d", -1);
 
-	info.si_signo = SIG_VM;
+	info.si_signo = SIG_VMREBOOT;
 	info.si_code = 0;
 	info.si_errno = 0;
 	printk("Sending alarm signal to all VMs\n");
 
-	send_sig_info(SIG_VM,&info, usr_task);
+	send_sig_info(SIG_VMREBOOT,&info, usr_task);
 }
 
-void signalError(void* sigp)
+void signalEvent(int sig, void* sigp)
 {
 	struct siginfo info;
-	VMAlarm *vma = (VMAlarm*)sigp;
-	memset(param,0, sizeof(char)*MSGSIZE);
-	sprintf(param, "%d", vma->pid);
+	VMAlarm *vma;
+	switch(sig)
+	{
+	  case SIG_VMREBOOT:
+		  vma = (VMAlarm*)sigp;
+		  memset(param,0, sizeof(char)*MSGSIZE);
+	      sprintf(param, "%d", vma->pid);
+	      printk("Sending alarm signal to %d\n", vma->pid);
+	      break;
+	  case SIG_VMUPDATE:
+		  printk("Sending VM list update signal\n");
+		  break;
+	  default: break;
+	}
 
-	info.si_signo = SIG_VM;
+	info.si_signo = sig;
 	info.si_code = 0;
 	info.si_errno = 0;
-	printk("Sending alarm signal to %d\n", vma->pid);
 
-	send_sig_info(SIG_VM,&info, usr_task);
+	send_sig_info(sig, &info, usr_task);
 }
 
 static int device_open(struct inode *inode, struct file *file)

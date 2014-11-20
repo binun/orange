@@ -11,7 +11,7 @@
 static GuardedCommand guarded_commands[] =
 {
    {1, isHVUnsafeState,enforceHVSafeState},
-   {0, isHVDeadVMs,enforceHVSafeState},
+   //{0, isHVDeadVMs,enforceHVSafeState},
    {1, isSchedulerSafeState,enforceSchedulerSafeState},
    {1, isTrafficSafeState,enforceTrafficSafeState}
 };

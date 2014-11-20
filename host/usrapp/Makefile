@@ -1,14 +1,13 @@
 TARGET = client
 CC = gcc
 VMIDIR = /usr/share/libvmi
-XMLDIR = /usr/include/libxml2
+# XMLDIR = /usr/include/libxml2
 
-CFLAGS = -g -Wall -I$(XMLDIR) -I$(VMIDIR)
+CFLAGS = -g -Wall -I$(VMIDIR)
 LIBPATHS = -L$(VMIDIR)/libvmi/.libs
-LDFLAGS = -lvirt -lxml2 -lvmi
-CFILES = libvirt-proxy.c
+LDFLAGS = -lvirt -lvmi
+CFILES = event-loop.c event-details.c callbacks.c utils.c vector/vector.c
 OBJECTS = $(CFILES:%.c=%.o)
-
 
 client: $(OBJECTS)
 	$(CC) $(CFLAGS) $(LIBPATHS) $(OBJECTS) -o $(TARGET) $(LDFLAGS)

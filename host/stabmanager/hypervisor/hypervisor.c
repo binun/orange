@@ -88,11 +88,10 @@ bool isHVDeadVMs(void)
 	  live = (int)(atomic_read(&(states[i].alive)));
       if (states[i].last_rebooted<=0) //first reboot
     	  enough_running = 1;
-      else //runs during a long time...
-	      enough_running = ((msecs_to_jiffies(jiffies)-states[i].last_rebooted)>recovery_period);
+
 
 	  printk("CPU %d Status: live %d enough running %d\n", i, live,enough_running);
-	  if (!live && enough_running)
+	  if (!live && (msecs_to_jiffies(jiffies)-states[i].last_rebooted)>silence_period)
 	  {
 		  dead = 1;
 		  states[i].toReset= 1;
@@ -116,17 +115,23 @@ bool isHVUnsafeState(void)
   if (infected_cpu==NULL)
   {
 	  debugPrint("No rootkits");
-	  return false;
+	  //return false;
   }
 
+  if (num_vcpus==0)
+	  debugPrint("No VCPUS");
+  else
   for (i = 0; i < num_vcpus; i++)
   {
-	  if (states[i].cpu==infected_cpu)
-	  {
+	  struct kvm_vcpu *vcpu = (struct kvm_vcpu*)(states[i].cpu);
+	  int vcpid = vcpu->pid->numbers[0].nr;
+	  printk("Monitoring: pid %d\n", vcpid);
+	  //if (states[i].cpu==infected_cpu)
+	  //{
 		  //debugPrint("Prepare for CPU reset --- rootkits\n");
-		  unsafe = 1;
-		  states[i].toReset=1;
-	  }
+		  //unsafe = 1;
+		  //states[i].toReset=1;
+	  //}
   }
   return unsafe;
 }
@@ -146,7 +151,7 @@ void enforceHVSafeState(void *_data, async_cookie_t c)
 	      states[i].toReset = 0;
           vma.pid = states[i].pid;
           states[i].last_rebooted = msecs_to_jiffies(jiffies);
-          signalError(&vma);
+          signalEvent(SIG_VMREBOOT, &vma);
        }
    }
 }
@@ -183,7 +188,6 @@ void refreshHVState(void)
   for (i = 0; i < num_vcpus; i++)
     {
        states[i].toReset = 0;
-       //atomic_set(&(states[i].alive), 0);
        atomic_set(&(states[i].dos_requests), 0);
     }      
   
@@ -225,12 +229,37 @@ void backupHVState(void*data, async_cookie_t c)
 	debugPrint("Backup the hypervisor state");
 }
 
+void refreshVMList(void)
+{
+	struct kvm*kvm;
+	struct kvm_vcpu *vcpu;
+
+	int i=0;
+	num_vcpus = 0;
+	memset(states,0,sizeof(VCPUState)*MAX_VCPUS);
+	list_for_each_entry(kvm, vms_list, vm_list)
+	 {
+	   kvm_for_each_vcpu(i, vcpu, kvm)
+	    {
+	     states[num_vcpus].cpu = (void*)vcpu;
+	     states[num_vcpus].toReset = 0;
+	     states[num_vcpus].pid = vcpu->pid->numbers[0].nr;
+	     states[num_vcpus].last_rebooted = -1;
+	     atomic_set(&(states[num_vcpus].alive), 0);
+	     atomic_set(&(states[num_vcpus].dos_requests), 0);
+	     printk("Attaching new CPU %d PID %d\n", num_vcpus, states[num_vcpus].pid);
+	     num_vcpus++;
+	   }
+     }
+	memset (message, 0, sizeof(char)*MSGLEN);
+	sprintf (message, "There are %d VCPUs", num_vcpus);
+	debugPrint(message);
+
+    signalEvent(SIG_VMUPDATE, NULL);
+}
+
 int initHypervisor(void)
 {   
-	int i=0;
-	struct kvm*kvm;
-    struct kvm_vcpu *vcpu;
-    num_vcpus = 0;
     vms_list = (struct list_head*)kallsyms_lookup_name("vm_list");
     //vm_lock =(raw_spinlock_t*)kallsyms_lookup_name("kvm_lock");
 
@@ -239,28 +268,6 @@ int initHypervisor(void)
     	debugPrint("ERROR - Function tracing is out");
     	return -1;
     }
-
-    //spin_lock(&kvm_lock);
-    list_for_each_entry(kvm, vms_list, vm_list)
-      {
-    	 kvm_for_each_vcpu(i, vcpu, kvm)
-          {
-           states[num_vcpus].cpu = (void*)vcpu;
-           states[num_vcpus].toReset = 0;
-           states[num_vcpus].pid = vcpu->pid->numbers[0].nr;
-           states[num_vcpus].last_rebooted = -1;
-           atomic_set(&(states[num_vcpus].alive), 0);
-           atomic_set(&(states[num_vcpus].dos_requests), 0);
-           printk("Attaching new CPU %d PID %d\n", num_vcpus, states[num_vcpus].pid);
-           num_vcpus++;
-          }
-      }
-
-    memset (message, 0, sizeof(char)*MSGLEN);
-    sprintf (message, "There are %d VCPUs", num_vcpus);
-    debugPrint(message);
-    //spin_unlock(vm_lock);
-
     debugPrint("INIT - Hypervisor initialized");
     return 0;
 }

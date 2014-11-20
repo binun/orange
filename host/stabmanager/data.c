@@ -8,7 +8,7 @@ int backup_phase = 0;
 
 int num_vcpus = 0;
 
-unsigned long recovery_period = 60000; //1 minutes=5*60*1000 milliseconds
+unsigned long silence_period = 5*60*1000; //5 minutes =1*60*1000 milliseconds
 
 VCPUState states[MAX_VCPUS];
 

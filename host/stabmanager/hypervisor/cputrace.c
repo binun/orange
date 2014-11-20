@@ -11,6 +11,7 @@
 
 static char *cpuid_point = "kvm_cpuid";
 static char *hcall_point = "kvm_emulate_hypercall";
+
 void *infected_cpu;
 static struct jprobe cpuid_jpr,hcall_jpr;
 
@@ -18,10 +19,11 @@ extern int num_vcpus;
 extern VCPUState states[MAX_VCPUS];
 
 extern void registerDOSHit(void*);
+extern void refreshVMList(void);
 
 static int cpuid_handler(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx, u32 *ecx, u32 *edx)
 {		
-	registerDOSHit((void*)vcpu);
+	//registerDOSHit((void*)vcpu);
 	
 	jprobe_return();
 	return 0;
@@ -29,17 +31,15 @@ static int cpuid_handler(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx, u32 *ecx, u3
 
 static int hcall_handler(struct kvm_vcpu *vcpu)
 {
-	char msg[150] = "";
+	char msg[50] = "";
     int i = 0;
-    unsigned int command;
-    debugPrint("Hypercall arrived");
+    unsigned int command = vcpu->arch.regs[0];
+
 	if (vcpu==NULL)
 	{
-		debugPrint("Illegal hypercall");
+		debugPrint("Illegal Hypercall");
 		jprobe_return();
 	}
-
-	command = vcpu->arch.regs[0];
 
 	if (command==HC_ALARM)
 	{
@@ -48,25 +48,28 @@ static int hcall_handler(struct kvm_vcpu *vcpu)
 		jprobe_return();
 	}
 
+	if (command==HC_VMUP)
+	{
+		debugPrint("Hypercall updating VM List");
+		refreshVMList();
+		jprobe_return();
+
+	}
+
     if (command==HC_ALIVE)
     {
-    	//raw_spin_lock(vm_lock);
+    	debugPrint("Hypercall updating VM List");
 
     	for (i = 0; i < num_vcpus; i++)
     	 if (states[i].pid == vcpu->pid->numbers[0].nr)
     	 {
     	  atomic_set(&(states[i].alive), 1);
-    	  sprintf(msg, "Hypercall accepted from VCPU ID %d Status %d",i,
-    			  (int)(atomic_read(&(states[i].alive)))
-    			  );
+    	  sprintf(msg, "Hypercall accepted from VCPU ID %d Status %d",i,(int)(atomic_read(&(states[i].alive))));
     	  debugPrint(msg);
     	 }
 
-
-    	//raw_spin_unlock(vm_lock);
     	jprobe_return();
     }
-
 	return 0;
 }
 

@@ -14,7 +14,7 @@ compile:
 install:
 	insmod $(STABMAN_DIR)/$(STABMAN).ko
 	insmod $(SMM_DIR)/$(SMM).ko
-	$(USRAPP_DIR)/$(USRAPP) $(SYSMAP)
+	$(USRAPP_DIR)/$(USRAPP)
 	
 uninstall:
 	rmmod $(SMM)

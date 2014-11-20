@@ -1,4 +1,4 @@
 int initStabmanDevice(void);
 void cleanupStabmanDevice(void);
 
-void signalError(void*);
+void signalEvent(short, void*);
