@@ -1,0 +1,1 @@
+cmd_/root/orange/host/stabmanager/stabman.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /root/orange/host/stabmanager/stabman.ko /root/orange/host/stabmanager/stabman.o /root/orange/host/stabmanager/stabman.mod.o

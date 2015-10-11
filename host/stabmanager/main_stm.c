@@ -100,10 +100,10 @@ static int __init main_init(void)
   int ret = 0;
   debugPrint("INIT - Starting to load main");
 
-  ret |= initStabmanDevice();
+  //ret |= initStabmanDevice();
   //ret |= initWatchdog();
-  ret |= initHypervisor();
-  ret |= initStabilizationManager();
+  //ret |= initHypervisor();
+  //ret |= initStabilizationManager();
   //ret |= initTrafficManager();
   //ret |= initScheduler();
   
@@ -114,12 +114,12 @@ static void __exit main_cleanup(void)
 {   
   debugPrint("CLEANUP - Cleaning up main module");
   
-  cleanupHypervisor();
-  cleanupStabilizationManager();
+  //cleanupHypervisor();
+  //cleanupStabilizationManager();
   //cleanupTrafficManager();
-  cleanupScheduler();
-  cleanupWatchdog();
-  cleanupStabmanDevice();
+  //cleanupScheduler();
+  //cleanupWatchdog();
+  //cleanupStabmanDevice();
 
   return;
 }

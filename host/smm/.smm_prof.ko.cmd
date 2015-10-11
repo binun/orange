@@ -1,0 +1,1 @@
+cmd_/root/orange/host/smm/smm_prof.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /root/orange/host/smm/smm_prof.ko /root/orange/host/smm/smm_prof.o /root/orange/host/smm/smm_prof.mod.o
